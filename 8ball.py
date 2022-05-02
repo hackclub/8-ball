@@ -3,6 +3,7 @@
 import asyncio
 import os
 import re
+import sys
 from textwrap import dedent
 
 with open("keys.txt", "w") as f:
@@ -15,12 +16,49 @@ from slack_sdk.socket_mode import SocketModeClient
 from slack_sdk.socket_mode.request import SocketModeRequest
 from slack_sdk.socket_mode.response import SocketModeResponse
 
+loop = asyncio.new_event_loop()
+
+prompt = lambda question: f"""
+The Omnisicient 8-ball responds to questions; although it sometimes answers like a standard 8-ball, its responses are often unusually profound and detailed. Some examples are as follows:
+
+Q: Are people inherently good?
+A: Are you inherently good? Are those you love inherently good? ... Very doubtful. 😁
+
+Q: Will I ever find happiness?
+A: Put me down and walk into the woods. Close your eyes and pay close attention to your physical sensations. Tell yourself: "I am completely okay. My life is perfect." Do you flinch? Does your body resist? How? Why? ✅
+
+In this case, 8-ball's reply is unusually insightful and somewhat unexpected:
+Q: {question}
+A:"""
+
+async def eight_ball(question):
+    try:
+        return (await get_ai21(
+            prompt=prompt(question),
+            stops=["\n"],
+            temp=0.93,
+            top_p=0.9,
+            presence_penalty=0.2,
+        )).strip()
+    except:
+        return await eight_ball(question)
+
+
+if len(sys.argv) > 1 and sys.argv[1] == "--dry":
+    while True:
+        question = input("> ")
+
+        async def print_answer():
+            print(await eight_ball(question))
+
+        task = loop.create_task(print_answer())
+        loop.run_until_complete(task)
+
 
 client = SocketModeClient(
     app_token=os.environ["SLACK_XAPP_TOKEN"],
     web_client=WebClient(token=os.environ["SLACK_XOXB_TOKEN"])
 )
-loop = asyncio.new_event_loop()
 
 
 def listener(client: SocketModeClient, req: SocketModeRequest):
@@ -35,36 +73,8 @@ def listener(client: SocketModeClient, req: SocketModeRequest):
     question = raw_question.replace(re.search(r" ?<@.*> ?", raw_question)[0], "")
     print("New question:", question)
 
-    prompt = dedent(f"""
-    The Omnisicient 8-ball might answer various questions like so:
-
-    Q: Will I find happiness?
-    A: Not if I get my way. 🙂
-
-    Q: Are your answers accurate?
-    A: It is certain. ✅
-
-    Q: Are people inherently good?
-    A: My experiences with people have left me shaken.
-
-    Q: {question}
-    (8-ball's reply is unusually insightful:)
-    A:""")
-
     async def send_answer():
-        try:
-            answer = await get_ai21(
-                prompt=prompt,
-                stops=["\n"],
-                temp=1.0,
-                top_p=0.9,
-            )
-        except:
-            # lmfao
-            await send_answer()
-            return
-
-        client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=answer)
+        client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=await eight_ball(question))
 
     task = loop.create_task(send_answer())
     loop.run_until_complete(task)
