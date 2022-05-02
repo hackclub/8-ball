@@ -33,13 +33,16 @@ A:"""
 
 async def eight_ball(question):
     try:
-        return (await get_ai21(
+        raw_output = await get_ai21(
             prompt=prompt(question),
             stops=["\n"],
             temp=0.93,
             top_p=0.9,
             presence_penalty=0.2,
-        )).strip()
+        )
+        if "<0xF0>" in output:
+            return await eight_ball(question)
+        return raw_output.strip()
     except:
         return await eight_ball(question)
 
@@ -49,7 +52,10 @@ if len(sys.argv) > 1 and sys.argv[1] == "--dry":
         question = input("> ")
 
         async def print_answer():
-            print(await eight_ball(question))
+            output = await eight_ball(question)
+            if "<0xF0>" in output:
+                print("(invalid emoji)")
+            print(output)
 
         task = loop.create_task(print_answer())
         loop.run_until_complete(task)
