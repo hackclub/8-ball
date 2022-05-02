@@ -69,12 +69,21 @@ def listener(client: SocketModeClient, req: SocketModeRequest):
     if req.type != "events_api" or req.payload["event"]["type"] != "app_mention":
         return
 
+    try:
+        thread = req.payload["event"]["thread_ts"]
+    except KeyError:
+        thread = None
+
     raw_question = req.payload["event"]["text"]
     question = raw_question.replace(re.search(r" ?<@.*> ?", raw_question)[0], "")
     print("New question:", question)
 
     async def send_answer():
-        client.web_client.chat_postMessage(channel=req.payload["event"]["channel"], text=await eight_ball(question))
+        client.web_client.chat_postMessage(
+            channel=req.payload["event"]["channel"],
+            thread_ts=thread,
+            text=await eight_ball(question)
+        )
 
     task = loop.create_task(send_answer())
     loop.run_until_complete(task)
