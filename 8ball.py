@@ -40,8 +40,6 @@ async def eight_ball(question):
             top_p=0.9,
             presence_penalty=0.2,
         )
-        if "<0xF0>" in output:
-            return await eight_ball(question)
         return raw_output.strip()
     except:
         return await eight_ball(question)
