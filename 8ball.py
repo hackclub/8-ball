@@ -5,6 +5,8 @@ import os
 import re
 from textwrap import dedent
 
+with open("keys.txt", "w") as f:
+    f.write(os.environ["AI21_API_KEY"])
 os.environ["AI21_API_KEY_FILE"] = "keys.txt"
 from pyai21.completions import get_ai21
 
