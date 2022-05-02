@@ -38,7 +38,7 @@ async def eight_ball(question):
             stops=["\n"],
             temp=0.93,
             top_p=0.9,
-            presence_penalty=0.2,
+            presence_penalty=0.4,
         )
         remove_invalid_emoji = re.search(".*(?=<0xF0>)", raw_output.strip())
         if remove_invalid_emoji is not None:
