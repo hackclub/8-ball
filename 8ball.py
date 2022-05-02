@@ -48,7 +48,7 @@ def listener(client: SocketModeClient, req: SocketModeRequest):
     A: My experiences with people have left me shaken.
 
     Q: {question}
-    (Notice that the 8-ball's reply is somewhat florid and slightly ominous:)
+    (8-ball's reply is unusually insightful:)
     A:""")
 
     async def send_answer():
