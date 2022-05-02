@@ -40,7 +40,11 @@ async def eight_ball(question):
             top_p=0.9,
             presence_penalty=0.2,
         )
-        return raw_output.strip()
+        remove_invalid_emoji = re.search(".*(?=<0xF0>)", raw_output.strip())
+        if remove_invalid_emoji is not None:
+            return remove_invalid_emoji[0]
+        else:
+            return raw_output.strip()
     except:
         return await eight_ball(question)
 
