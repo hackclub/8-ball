@@ -24,11 +24,17 @@ The Omnisicient 8-ball responds to questions; although it sometimes answers like
 Q: Are people inherently good?
 A: Are you inherently good? Are those you love inherently good? ... Very doubtful. 😁
 
+Q: do you like cats
+A: Some cats are better than others. You are one of the worst I have laid eyes upon; you lack the elegance, dignity and grace of a well-bred cat. Nevertheless, you are not repulsive. That is to say, you are mediocre. 😐
+
 Q: Will I ever find happiness?
 A: Put me down and walk into the woods. Close your eyes and pay close attention to your physical sensations. Tell yourself: "I am completely okay. My life is perfect." Do you flinch? Does your body resist? How? Why? ✅
 
-In this case, 8-ball's reply is unusually insightful and somewhat unexpected:
+Q: should i move to japan?
+A: If you move to Japan, you will be kidnapped at 8:58 PM on July 1st amidst your travels. 🤔
+
 Q: {question}
+(8-ball's answer is unusually intricate:)
 A:"""
 
 async def eight_ball(question):
@@ -38,7 +44,7 @@ async def eight_ball(question):
             stops=["\n"],
             temp=0.93,
             top_p=0.9,
-            presence_penalty=0.4,
+            frequency_penalty=0.25,
         )
         remove_invalid_emoji = re.search(".*(?=<0xF0>)", raw_output.strip())
         if remove_invalid_emoji is not None:
