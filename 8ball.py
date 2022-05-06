@@ -2,6 +2,7 @@
 
 import asyncio
 import os
+import random
 import re
 import sys
 from textwrap import dedent
@@ -34,7 +35,7 @@ Q: should i move to japan?
 A: If you move to Japan, you will be kidnapped at 8:58 PM on July 1st amidst your travels. 🤔
 
 Q: {question}
-(8-ball's answer is unusually intricate:)
+{"(8-ball's answer is unusually intricate:)" if random.random() < 0.3 else "(8-ball's answer is unusually perceptive:)"}
 A:"""
 
 async def eight_ball(question):
