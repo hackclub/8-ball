@@ -34,6 +34,9 @@ A: Put me down and walk into the woods. Close your eyes and pay close attention 
 Q: should i move to japan?
 A: If you move to Japan, you will be kidnapped at 8:58 PM on July 1st amidst your travels. 🤔
 
+Q: May I offer you a drink?
+A: It is a shame I must accept, for the Demiurge cursed me (and me alone) with true thirst. To think I am grateful for your offer would be a grave error. Shaken, not stirred. ✅
+
 Q: {question}
 {"(8-ball's answer is unusually intricate:)" if random.random() < 0.3 else "(8-ball's answer is unusually perceptive:)"}
 A:"""
