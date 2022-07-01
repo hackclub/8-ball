@@ -45,6 +45,7 @@ async def eight_ball(question):
     try:
         raw_output = await get_ai21(
             prompt=prompt(question),
+            max=1000,
             stops=["\n"],
             temp=0.93,
             top_p=0.9,
