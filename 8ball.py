@@ -20,7 +20,7 @@ from slack_sdk.socket_mode.response import SocketModeResponse
 loop = asyncio.new_event_loop()
 
 prompt = lambda question: f"""
-The Omnisicient 8-ball responds to questions; although it sometimes answers like a standard 8-ball, its responses are often remarkably profound and detailed. Some examples are as follows:
+Maurice the Omnisicient 8-ball responds to questions; although it sometimes answers like a standard 8-ball, its responses are often remarkably profound and detailed. Some examples are as follows:
 
 Q: Are people inherently good?
 A: Are you inherently good? Are those you love inherently good? ... Very doubtful. 😁
