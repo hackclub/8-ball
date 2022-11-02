@@ -111,5 +111,15 @@ def listener(client: SocketModeClient, req: SocketModeRequest):
 client.socket_mode_request_listeners.append(listener)
 client.connect()
 
-from threading import Event
+# Heroku expects a port bound to the app, so start
+from flask import Flask
+app = Flask(__name__)
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
+def run_server
+    app.run(host='127.0.0.1', port=os.getenv("PORT", 5000))
+
+from threading import Event, Thread
+Thread(target=run_server).start()
 Event().wait()
