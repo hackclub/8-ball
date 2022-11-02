@@ -117,7 +117,7 @@ app = Flask(__name__)
 @app.route("/")
 def hello_world():
     return "<p>Hello, World!</p>"
-def run_server
+def run_server():
     app.run(host='127.0.0.1', port=os.getenv("PORT", 5000))
 
 from threading import Event, Thread
