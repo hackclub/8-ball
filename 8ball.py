@@ -120,6 +120,8 @@ def hello_world():
 def run_server():
     app.run(host='127.0.0.1', port=os.getenv("PORT", 5000))
 
-from threading import Event, Thread
-Thread(target=run_server).start()
-Event().wait()
+# from threading import Event, Thread
+# Thread(target=run_server).start()
+# Event().wait()
+
+run_server()
